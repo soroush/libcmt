@@ -553,7 +553,7 @@ void CMT::processFrame(cv::Mat im_gray)
 
         //In a second step, try to match difficult keypoints
         //If structural constraints are applicable
-        if(!(isnan(center.x) | isnan(center.y)))
+        if(!(std::isnan(center.x) | std::isnan(center.y)))
         {
             //Compute distances to initial descriptors
             std::vector<cv::DMatch> matches;
@@ -641,7 +641,7 @@ void CMT::processFrame(cv::Mat im_gray)
 
     boundingbox = cv::Rect_<float>(NAN,NAN,NAN,NAN);
     hasResult = false;
-    if(!(isnan(center.x) | isnan(center.y)) && activeKeypoints.size() > nbInitialKeypoints / 10)
+    if(!(std::isnan(center.x) | std::isnan(center.y)) && activeKeypoints.size() > nbInitialKeypoints / 10)
     {
         hasResult = true;
 
