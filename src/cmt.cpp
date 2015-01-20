@@ -24,8 +24,9 @@ bool isnan(T d)
 using namespace std;
 using namespace cv;
 
-void inout_rect(const vector<KeyPoint>& keypoints, Point2f topleft,
-        Point2f bottomright, vector<KeyPoint>& in, vector<KeyPoint>& out) {
+void CMT::inout_rect(const vector<KeyPoint>& keypoints, const Point2f& topleft,
+        const Point2f& bottomright, vector<KeyPoint>& in,
+        vector<KeyPoint>& out) {
     for (unsigned int i = 0; i < keypoints.size(); i++) {
         if (keypoints[i].pt.x > topleft.x && keypoints[i].pt.y > topleft.y
                 && keypoints[i].pt.x < bottomright.x
@@ -36,9 +37,9 @@ void inout_rect(const vector<KeyPoint>& keypoints, Point2f topleft,
     }
 }
 
-void track(Mat im_prev, Mat im_gray,
-        const vector<pair<KeyPoint, int> >& keypointsIN,
-        vector<pair<KeyPoint, int> >& keypointsTracked,
+void CMT::track(const Mat& im_prev, const Mat& im_gray,
+        const vector<pair<KeyPoint, int>>& keypointsIN,
+        vector<pair<KeyPoint, int>>& keypointsTracked,
         vector<unsigned char>& status, int THR_FB) {
     //Status of tracked keypoint - True means successfully tracked
     status = vector<unsigned char>();
@@ -87,7 +88,7 @@ void track(Mat im_prev, Mat im_gray,
         keypointsTracked = vector<pair<KeyPoint, int> >();
 }
 
-Point2f rotate(Point2f p, float rad) {
+Point2f CMT::rotate(const Point2f& p, const float& rad) {
     if (rad == 0)
         return p;
     float s = sin(rad);
@@ -118,7 +119,7 @@ void CMT::initialise(const Mat& im_gray0, const Rect_<float>& rect) {
 
 void CMT::initialise(const Mat& im_gray0, Point2f topleft,
         Point2f bottomright) {
-    //Initialise detector, descriptor, matcher
+    //Initialize detector, descriptor, matcher
     m_detector = Algorithm::create<FeatureDetector>(m_detectorType.c_str());
     m_descriptorExtractor = Algorithm::create<DescriptorExtractor>(
             m_descriptorType.c_str());
@@ -306,8 +307,8 @@ vector<Cluster> linkage(const vector<Point2f>& list) {
     vector<Cluster> clusters;
     while (clusters.size() < list.size() - 1) {
         int x, y;
-        float minValue = findMinSymetric(dist, used, list.size() + clusters.size(),
-                x, y);
+        float minValue = findMinSymetric(dist, used,
+                list.size() + clusters.size(), x, y);
         Cluster cluster;
         cluster.first = x;
         cluster.second = y;

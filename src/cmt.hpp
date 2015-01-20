@@ -21,6 +21,18 @@ public:
             std::vector<std::pair<cv::KeyPoint, int> >& keypoints);
     void processFrame(cv::Mat im_gray);
 private:
+    void inout_rect(const std::vector<cv::KeyPoint>& keypoints,
+            const cv::Point2f& topleft,
+            const cv::Point2f& bottomright,
+            std::vector<cv::KeyPoint>& in,
+            std::vector<cv::KeyPoint>& out);
+    void track(const cv::Mat& im_prev, const cv::Mat& im_gray,
+            const std::vector<std::pair<cv::KeyPoint, int>>& keypointsIN,
+            std::vector<std::pair<cv::KeyPoint, int>>& keypointsTracked,
+            std::vector<unsigned char>& status, int THR_FB = 20);
+    cv::Point2f rotate(const cv::Point2f& p, const float& rad);
+
+
     std::string m_detectorType;
     std::string m_descriptorType;
     std::string m_matcherType;
@@ -77,12 +89,5 @@ public:
     int num;
 };
 
-void inout_rect(const std::vector<cv::KeyPoint>& keypoints, cv::Point2f topleft,
-        cv::Point2f bottomright, std::vector<cv::KeyPoint>& in,
-        std::vector<cv::KeyPoint>& out);
-void track(cv::Mat im_prev, cv::Mat im_gray,
-        const std::vector<std::pair<cv::KeyPoint, int> >& keypointsIN,
-        std::vector<std::pair<cv::KeyPoint, int> >& keypointsTracked,
-        std::vector<unsigned char>& status, int THR_FB = 20);
-cv::Point2f rotate(cv::Point2f p, float rad);
+
 #endif // CMT_H
