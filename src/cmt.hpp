@@ -7,29 +7,33 @@
 class CMT {
 public:
     CMT(const std::string& detectorType = "Feature2D.BRISK",
-            const std::string& descriptorType = "Feature2D.BRISK",
-            const std::string& matcherType = "BruteForce-Hamming",
-            const int& thrOutlier = 20, const float& thrConf = 0.75,
-            const float& thrRatio = 0.8, const int& descriptorLength = 512,
-            const bool& estimateScale = true, const bool& estimateRotation =
-                    true, const unsigned int& nbInitialKeypoints = 0);
-    void initialise(const cv::Mat& im_gray0, const cv::Rect_<float>&);
-    void initialise(const cv::Mat& im_gray0, cv::Point2f topleft,
-            cv::Point2f bottomright);
-    void estimate(const std::vector<std::pair<cv::KeyPoint, int> >& keypointsIN,
-            cv::Point2f& center, float& scaleEstimate, float& medRot,
-            std::vector<std::pair<cv::KeyPoint, int> >& keypoints);
-    void processFrame(cv::Mat im_gray);
+        const std::string& descriptorType = "Feature2D.BRISK",
+        const std::string& matcherType = "BruteForce-Hamming",
+        const int thrOutlier = 20,
+        const float thrConf = 0.75,
+        const float thrRatio = 0.8,
+        const int descriptorLength = 512,
+        const bool estimateScale = true,
+        const bool estimateRotation = true,
+        const size_t nbInitialKeypoints = 0);
+    void initialise(const cv::Mat& im_gray0, const cv::Rect2f&);
+    void initialise(const cv::Mat& im_gray0, cv::Point2f topleft, cv::Point2f bottomright);
+    void estimate(const std::vector<std::pair<cv::KeyPoint, int>>& keypointsIN,
+                  cv::Point2f& center,
+                  float& scaleEstimate,
+                  float& medRot,
+                  std::vector<std::pair<cv::KeyPoint, int>>& keypoints);
+    void processFrame(const cv::Mat& im_gray);
 private:
     void inout_rect(const std::vector<cv::KeyPoint>& keypoints,
-            const cv::Point2f& topleft,
-            const cv::Point2f& bottomright,
-            std::vector<cv::KeyPoint>& in,
-            std::vector<cv::KeyPoint>& out);
+                    const cv::Point2f& topleft,
+                    const cv::Point2f& bottomright,
+                    std::vector<cv::KeyPoint>& in,
+                    std::vector<cv::KeyPoint>& out);
     void track(const cv::Mat& im_prev, const cv::Mat& im_gray,
-            const std::vector<std::pair<cv::KeyPoint, int>>& keypointsIN,
-            std::vector<std::pair<cv::KeyPoint, int>>& keypointsTracked,
-            std::vector<unsigned char>& status, int THR_FB = 20);
+               const std::vector<std::pair<cv::KeyPoint, int>>& keypointsIN,
+               std::vector<std::pair<cv::KeyPoint, int>>& keypointsTracked,
+               int THR_FB = 20);
     cv::Point2f rotate(const cv::Point2f& p, const float& rad);
 
 
@@ -61,7 +65,7 @@ private:
     cv::Point2f bottomRight;
     cv::Point2f bottomLeft;
 
-    cv::Rect_<float> boundingbox;
+    cv::Rect2f boundingbox;
     bool hasResult;
 
     cv::Point2f centerToTopLeft;
@@ -72,22 +76,14 @@ private:
     std::vector<cv::Point2f> springs;
 
     cv::Mat im_prev;
-    std::vector<std::pair<cv::KeyPoint, int> > activeKeypoints;
-    std::vector<std::pair<cv::KeyPoint, int> > trackedKeypoints;
+    std::vector<std::pair<cv::KeyPoint, int>> activeKeypoints;
+    std::vector<std::pair<cv::KeyPoint, int>> trackedKeypoints;
 
-    unsigned int nbInitialKeypoints;
+    size_t nbInitialKeypoints;
 
     std::vector<cv::Point2f> votes;
 
-    std::vector<std::pair<cv::KeyPoint, int> > outliers;
+    std::vector<std::pair<cv::KeyPoint, int>> outliers;
 };
-
-class Cluster {
-public:
-    int first, second; //cluster id
-    float dist;
-    int num;
-};
-
 
 #endif // CMT_H

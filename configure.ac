@@ -1,7 +1,6 @@
-AC_INIT([libcmt], [0.1.0], [soroush@phemto-tech.com], [libcmt],
-        [https://github.com/soroush/libcmt])
+AC_INIT([libcmt], [0.1.0], [soroush@ametisco.ir], [libcmt], [https://github.com/soroush/libcmt])
 AC_PREREQ([2.59])
-AM_INIT_AUTOMAKE([1.10 -Wall no-define])
+AM_INIT_AUTOMAKE
 AM_SILENT_RULES
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
